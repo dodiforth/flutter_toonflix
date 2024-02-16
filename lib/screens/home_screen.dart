@@ -2,33 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_toon/models/webtoon.dart';
 import 'package:flutter_toon/services/api_service.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+class HomeScreen extends StatelessWidget {
+  HomeScreen({super.key});
 
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  List<WebtoonModel> webtoons = [];
-  bool isLoading = true;
-
-  void waitForWebToons() async {
-    webtoons = await ApiServices.getTodayWebtoons();
-    isLoading = false;
-    setState(() {});
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    waitForWebToons();
-  }
+  // Future<List<WebtoonModel>> getWebtoons() async {
+  //   return await ApiServices.getTodayWebtoons();
+  // }
+  Future<List<WebtoonModel>> webtoons = ApiServices.getTodayWebtoons();
 
   @override
   Widget build(BuildContext context) {
-    print(webtoons);
-    print(isLoading);
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(kToolbarHeight),
@@ -48,6 +31,29 @@ class _HomeScreenState extends State<HomeScreen> {
                 Colors.white, // change this to your desired AppBar color
           ),
         ),
+      ),
+      body: FutureBuilder<List<WebtoonModel>>(
+        future: webtoons,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return ListView.builder(
+              itemCount: snapshot.data!.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  leading: Image.network(snapshot.data![index].thumb),
+                  title: Text(snapshot.data![index].title),
+                );
+              },
+            );
+          } else if (snapshot.hasError) {
+            return Center(
+              child: Text('Error: ${snapshot.error}'),
+            );
+          }
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        },
       ),
     );
   }
