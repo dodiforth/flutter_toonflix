@@ -42,7 +42,23 @@ class HomeScreen extends StatelessWidget {
               itemCount: snapshot.data!.length,
               itemBuilder: (context, index) {
                 print(index);
-                return Text(snapshot.data![index].title);
+                return SizedBox(
+                  width: 100,
+                  child: Column(
+                    children: [
+                      Image.network(
+                        snapshot.data![index].thumb,
+                        headers: const {
+                          'Referer': 'https://comic.naver.com',
+                        },
+                        width: 100,
+                        height: 100,
+                        fit: BoxFit.cover,
+                      ),
+                      Text(snapshot.data![index].title),
+                    ],
+                  ),
+                );
                 // return SizedBox(
                 //   width: 100,
                 //   child: Column(
