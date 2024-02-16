@@ -8,7 +8,7 @@ class HomeScreen extends StatelessWidget {
   // Future<List<WebtoonModel>> getWebtoons() async {
   //   return await ApiServices.getTodayWebtoons();
   // }
-  Future<List<WebtoonModel>> webtoons = ApiServices.getTodayWebtoons();
+  final Future<List<WebtoonModel>> webtoons = ApiServices.getTodayWebtoons();
 
   @override
   Widget build(BuildContext context) {
@@ -36,13 +36,38 @@ class HomeScreen extends StatelessWidget {
         future: webtoons,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
+            print(snapshot.data![0].thumb);
             return ListView.builder(
+              scrollDirection: Axis.horizontal,
               itemCount: snapshot.data!.length,
               itemBuilder: (context, index) {
-                return ListTile(
-                  leading: Image.network(snapshot.data![index].thumb),
-                  title: Text(snapshot.data![index].title),
-                );
+                print(index);
+                return Text(snapshot.data![index].title);
+                // return SizedBox(
+                //   width: 100,
+                //   child: Column(
+                //     children: [
+                //       Image.network(
+                //         snapshot.data![index].thumb,
+                //         width: 100,
+                //         height: 100,
+                //         fit: BoxFit.cover,
+                //       ),
+                //       Text(snapshot.data![index].title),
+                //     ],
+                //   ),
+                // );
+                // return ListTile(
+                //   // leading: Image.network(snapshot.data![index].thumb),
+                //   // leading: Image.network(
+                //   //   snapshot.data![index].thumb,
+                //   //   width: 100,
+                //   //   height: 100,
+                //   //   fit: BoxFit.cover,
+                //   // ),
+
+                //   title: Text(snapshot.data![index].title),
+                // );
               },
             );
           } else if (snapshot.hasError) {
