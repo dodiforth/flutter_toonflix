@@ -37,7 +37,7 @@ class HomeScreen extends StatelessWidget {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             print(snapshot.data![0].thumb);
-            return ListView.builder(
+            return ListView.separated(
               scrollDirection: Axis.horizontal,
               itemCount: snapshot.data!.length,
               itemBuilder: (context, index) {
@@ -68,6 +68,11 @@ class HomeScreen extends StatelessWidget {
 
                 //   title: Text(snapshot.data![index].title),
                 // );
+              },
+              separatorBuilder: (context, index) {
+                return const SizedBox(
+                  width: 10,
+                );
               },
             );
           } else if (snapshot.hasError) {
