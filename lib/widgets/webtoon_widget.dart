@@ -14,38 +14,41 @@ class WebtoonWidget extends StatelessWidget {
     final logger = Logger();
     return Column(
       children: [
-        Container(
-          width: 250,
-          clipBehavior: Clip.hardEdge,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(1),
-                offset: const Offset(1.0, 5.0),
-                blurRadius: 7,
-              ),
-            ],
-          ),
-          child: GestureDetector(
-            onTap: () {
-              Navigator.push(
-                context,
-                PageRouteBuilder(
-                  fullscreenDialog: true,
-                  pageBuilder: (context, animation, secondaryAnimation) {
-                    return SingleWebtoonScreen(
-                        title: title, thumb: thumb, id: id);
-                  },
+        Hero(
+          tag: id,
+          child: Container(
+            width: 250,
+            clipBehavior: Clip.hardEdge,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(1),
+                  offset: const Offset(1.0, 5.0),
+                  blurRadius: 7,
                 ),
-              );
-              logger.i('WebtoonWidget: $id');
-            },
-            child: Image.network(
-              thumb,
-              headers: const {
-                'Referer': 'https://comic.naver.com',
+              ],
+            ),
+            child: GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  PageRouteBuilder(
+                    fullscreenDialog: true,
+                    pageBuilder: (context, animation, secondaryAnimation) {
+                      return SingleWebtoonScreen(
+                          title: title, thumb: thumb, id: id);
+                    },
+                  ),
+                );
+                logger.i('WebtoonWidget: $id');
               },
+              child: Image.network(
+                thumb,
+                headers: const {
+                  'Referer': 'https://comic.naver.com',
+                },
+              ),
             ),
           ),
         ),

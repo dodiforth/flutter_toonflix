@@ -28,24 +28,27 @@ class SingleWebtoonScreen extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
-                  width: 250,
-                  clipBehavior: Clip.hardEdge,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(1),
-                        offset: const Offset(1.0, 5.0),
-                        blurRadius: 7,
-                      ),
-                    ],
-                  ),
-                  child: Image.network(
-                    thumb,
-                    headers: const {
-                      'Referer': 'https://comic.naver.com',
-                    },
+                Hero(
+                  tag: id,
+                  child: Container(
+                    width: 250,
+                    clipBehavior: Clip.hardEdge,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(1),
+                          offset: const Offset(1.0, 5.0),
+                          blurRadius: 7,
+                        ),
+                      ],
+                    ),
+                    child: Image.network(
+                      thumb,
+                      headers: const {
+                        'Referer': 'https://comic.naver.com',
+                      },
+                    ),
                   ),
                 ),
               ],
