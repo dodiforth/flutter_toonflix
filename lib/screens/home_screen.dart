@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_toon/models/webtoon.dart';
 import 'package:flutter_toon/services/api_service.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_toon/widgets/webtoon_widget.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
@@ -64,40 +64,9 @@ class HomeScreen extends StatelessWidget {
       itemCount: snapshot.data!.length,
       padding: const EdgeInsets.all(20),
       itemBuilder: (context, index) {
-        return Column(
-          children: [
-            Container(
-              width: 250,
-              clipBehavior: Clip.hardEdge,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(1),
-                    offset: const Offset(1.0, 5.0),
-                    blurRadius: 7,
-                  ),
-                ],
-              ),
-              child: Image.network(
-                snapshot.data![index].thumb,
-                headers: const {
-                  'Referer': 'https://comic.naver.com',
-                },
-              ),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            Text(snapshot.data![index].title,
-                style: GoogleFonts.notoSans(
-                  textStyle: const TextStyle(
-                    fontSize: 23,
-                    fontWeight: FontWeight.w500,
-                  ),
-                )),
-          ],
-        );
+        var webtoon = snapshot.data![index];
+        return WebtoonWidget(
+            title: webtoon.title, thumb: webtoon.thumb, id: webtoon.id);
       },
       separatorBuilder: (context, index) {
         return const SizedBox(
