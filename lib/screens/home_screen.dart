@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_toon/models/webtoon.dart';
 import 'package:flutter_toon/services/api_service.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
@@ -61,18 +62,40 @@ class HomeScreen extends StatelessWidget {
     return ListView.separated(
       scrollDirection: Axis.horizontal,
       itemCount: snapshot.data!.length,
+      padding: const EdgeInsets.all(20),
       itemBuilder: (context, index) {
         return Column(
           children: [
-            Image.network(
-              snapshot.data![index].thumb,
-              headers: const {
-                'Referer': 'https://comic.naver.com',
-              },
-              width: 300,
-              fit: BoxFit.cover,
+            Container(
+              width: 250,
+              clipBehavior: Clip.hardEdge,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(1),
+                    offset: const Offset(1.0, 5.0),
+                    blurRadius: 7,
+                  ),
+                ],
+              ),
+              child: Image.network(
+                snapshot.data![index].thumb,
+                headers: const {
+                  'Referer': 'https://comic.naver.com',
+                },
+              ),
             ),
-            Text(snapshot.data![index].title),
+            const SizedBox(
+              height: 20,
+            ),
+            Text(snapshot.data![index].title,
+                style: GoogleFonts.notoSans(
+                  textStyle: const TextStyle(
+                    fontSize: 23,
+                    fontWeight: FontWeight.w500,
+                  ),
+                )),
           ],
         );
       },
