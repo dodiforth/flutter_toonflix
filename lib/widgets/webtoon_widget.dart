@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-
+import 'package:logger/logger.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_toon/screens/detail_screen.dart';
 
 class WebtoonWidget extends StatelessWidget {
   final String title, thumb, id;
@@ -10,6 +11,7 @@ class WebtoonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final logger = Logger();
     return Column(
       children: [
         Container(
@@ -25,11 +27,26 @@ class WebtoonWidget extends StatelessWidget {
               ),
             ],
           ),
-          child: Image.network(
-            thumb,
-            headers: const {
-              'Referer': 'https://comic.naver.com',
+          child: GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                PageRouteBuilder(
+                  fullscreenDialog: true,
+                  pageBuilder: (context, animation, secondaryAnimation) {
+                    return SingleWebtoonScreen(
+                        title: title, thumb: thumb, id: id);
+                  },
+                ),
+              );
+              logger.i('WebtoonWidget: $id');
             },
+            child: Image.network(
+              thumb,
+              headers: const {
+                'Referer': 'https://comic.naver.com',
+              },
+            ),
           ),
         ),
         const SizedBox(
