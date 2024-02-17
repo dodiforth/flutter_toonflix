@@ -36,60 +36,13 @@ class HomeScreen extends StatelessWidget {
         future: webtoons,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            print(snapshot.data![0].thumb);
-            return ListView.separated(
-              scrollDirection: Axis.horizontal,
-              itemCount: snapshot.data!.length,
-              itemBuilder: (context, index) {
-                print(index);
-                return SizedBox(
-                  width: 100,
-                  child: Column(
-                    children: [
-                      Image.network(
-                        snapshot.data![index].thumb,
-                        headers: const {
-                          'Referer': 'https://comic.naver.com',
-                        },
-                        width: 100,
-                        height: 100,
-                        fit: BoxFit.cover,
-                      ),
-                      Text(snapshot.data![index].title),
-                    ],
-                  ),
-                );
-                // return SizedBox(
-                //   width: 100,
-                //   child: Column(
-                //     children: [
-                //       Image.network(
-                //         snapshot.data![index].thumb,
-                //         width: 100,
-                //         height: 100,
-                //         fit: BoxFit.cover,
-                //       ),
-                //       Text(snapshot.data![index].title),
-                //     ],
-                //   ),
-                // );
-                // return ListTile(
-                //   // leading: Image.network(snapshot.data![index].thumb),
-                //   // leading: Image.network(
-                //   //   snapshot.data![index].thumb,
-                //   //   width: 100,
-                //   //   height: 100,
-                //   //   fit: BoxFit.cover,
-                //   // ),
-
-                //   title: Text(snapshot.data![index].title),
-                // );
-              },
-              separatorBuilder: (context, index) {
-                return const SizedBox(
-                  width: 10,
-                );
-              },
+            return Column(
+              children: [
+                const SizedBox(
+                  height: 50,
+                ),
+                Expanded(child: makeList(snapshot)),
+              ],
             );
           } else if (snapshot.hasError) {
             return Center(
@@ -101,6 +54,33 @@ class HomeScreen extends StatelessWidget {
           );
         },
       ),
+    );
+  }
+
+  ListView makeList(AsyncSnapshot<List<WebtoonModel>> snapshot) {
+    return ListView.separated(
+      scrollDirection: Axis.horizontal,
+      itemCount: snapshot.data!.length,
+      itemBuilder: (context, index) {
+        return Column(
+          children: [
+            Image.network(
+              snapshot.data![index].thumb,
+              headers: const {
+                'Referer': 'https://comic.naver.com',
+              },
+              width: 300,
+              fit: BoxFit.cover,
+            ),
+            Text(snapshot.data![index].title),
+          ],
+        );
+      },
+      separatorBuilder: (context, index) {
+        return const SizedBox(
+          width: 40,
+        );
+      },
     );
   }
 }
