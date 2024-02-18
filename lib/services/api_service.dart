@@ -54,6 +54,8 @@ class ApiServices {
       logger.i(url);
       return episodesInstances;
     } else {
+      logger.i(url);
+
       throw Exception('Failed to load selected webtoon episodes');
     }
   }
