@@ -1,10 +1,31 @@
 import 'package:flutter/material.dart';
 
-class SingleWebtoonScreen extends StatelessWidget {
+import 'package:flutter_toon/services/api_service.dart';
+import 'package:flutter_toon/models/webtoon_detail.dart';
+import 'package:flutter_toon/models/webtoon_episode.dart';
+
+class SingleWebtoonScreen extends StatefulWidget {
   final String title, thumb, id;
 
   const SingleWebtoonScreen(
       {super.key, required this.title, required this.thumb, required this.id});
+
+  @override
+  State<SingleWebtoonScreen> createState() => _SingleWebtoonScreenState();
+}
+
+class _SingleWebtoonScreenState extends State<SingleWebtoonScreen> {
+  late Future<WebtoonDetailModel> webtoonDetail;
+
+  late Future<List<WebtoonEpisodeModel>> latestEpisodes;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    webtoonDetail = ApiServices.getWebtoonById(widget.id);
+    latestEpisodes = ApiServices.getLatestEpisodeById(widget.id);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +34,7 @@ class SingleWebtoonScreen extends StatelessWidget {
           foregroundColor: Colors.green[500],
           backgroundColor: Colors.white,
           title: Text(
-            title,
+            widget.title,
             style: const TextStyle(
               fontSize: 25,
               fontWeight: FontWeight.w500,
@@ -29,7 +50,7 @@ class SingleWebtoonScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Hero(
-                  tag: id,
+                  tag: widget.id,
                   child: Container(
                     width: 250,
                     clipBehavior: Clip.hardEdge,
@@ -44,7 +65,7 @@ class SingleWebtoonScreen extends StatelessWidget {
                       ],
                     ),
                     child: Image.network(
-                      thumb,
+                      widget.thumb,
                       headers: const {
                         'Referer': 'https://comic.naver.com',
                       },
@@ -53,6 +74,47 @@ class SingleWebtoonScreen extends StatelessWidget {
                 ),
               ],
             ),
+            const SizedBox(
+              height: 20,
+            ),
+            FutureBuilder(
+                future: webtoonDetail,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 30),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            snapshot.data!.about,
+                            style: const TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w300,
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 15,
+                          ),
+                          Text(
+                            '${snapshot.data!.genre} / ${snapshot.data!.age}',
+                            style: const TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w300,
+                            ),
+                          )
+                        ],
+                      ),
+                    );
+                  } else if (snapshot.hasError) {
+                    return Center(
+                      child: Text('Error: ${snapshot.error}'),
+                    );
+                  }
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }),
           ],
         ));
   }

@@ -51,6 +51,7 @@ class ApiServices {
         final latestEpisode = WebtoonEpisodeModel.fromJson(episode);
         episodesInstances.add(latestEpisode);
       }
+      logger.i(url);
       return episodesInstances;
     } else {
       throw Exception('Failed to load selected webtoon episodes');
