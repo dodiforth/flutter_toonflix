@@ -42,7 +42,7 @@ To install and run this project, follow these steps:
 
 1. Clone the repository:
    ```sh
-   git clone https://github.com/yourusername/Flutter-Naver-Webtoon.git
+   git clone https://github.com/dodiforth/flutter_toonflix.git
    ```
 2. Navigate to the project directory:
    ```sh
